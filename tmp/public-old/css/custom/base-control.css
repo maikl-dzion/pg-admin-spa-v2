@@ -1,0 +1,226 @@
+
+.home,
+.baseControlPage,
+.blog
+.row-flex {
+    min-height: 790px;
+    border: 0px green solid
+}
+
+
+
+.base_control {
+    border:0px red solid;
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100% !important;
+    padding:2px;
+}
+
+.control__link_container {
+    border-bottom:0px #326690 solid;
+    margin:2px 0px 2px 0px;
+    display: flex;
+}
+
+.control__content_container {
+    border:0px red solid;
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100% !important;
+}
+
+.content__panel_header {
+    border:0px red solid;
+    height: 25px;
+}
+
+.content__left_panel,
+.content__main_panel {
+    border:0px gainsboro solid;
+    padding:2px;
+    margin:1px;
+    height: 100%;
+}
+
+.content__left_panel {
+    width:100%;
+}
+
+.content__main_panel {
+    width:100%;
+}
+
+/**********************/
+.link__div_flex {
+    display: flex;
+    width: 55%;
+}
+
+.link_div {
+    border:0px red solid;
+    /*border-right:1px #326690 solid;*/
+    margin:2px;
+    width: 180px;
+}
+
+.link_item {
+    cursor:pointer;
+    text-align: center;
+    width: 100%;
+    padding:2px;
+    border-right:1px gainsboro solid;
+    border-top:1px #f3f8fa solid;
+    /*border:1px white solid;*/
+}
+
+.link_item_active {
+    color:white;
+    background: lightsteelblue;
+    /*border-top:1px #326690 solid;*/
+    border-bottom:2px #326690 solid;
+}
+
+.link_item:hover {
+    color:grey;
+    border-top:1px #326690 solid;
+    /*border-top:1px #326690 solid;*/
+    /*background: ghostwhite;*/
+}
+/**********************/
+
+/* Правая панель меню*/
+.control__right_panel {
+    width: 45%;
+    border:0px red solid;
+    display: flex;
+}
+
+.create_open_btn {
+    width:28%;
+    padding: 2px 0px 0px 0px;
+    border: 2px #326690 solid;
+    border-bottom: 1px #326690 solid;
+    text-align:center;
+    background-color: rgb(235, 238, 243);
+    cursor:pointer;
+}
+
+.control__create_object_container {
+    /*border: 2px #326690 solid;*/
+    /*background-color: rgb(235, 238, 243);*/
+    /*z-index:35;*/
+    /*width:60%;*/
+    /*position: absolute;*/
+    /*margin-top:-4px;*/
+    /*right: 2px !important;*/
+    /*padding:2px;*/
+}
+
+
+.row-flex {
+    margin:0px;
+    padding:0px;
+    display: flex
+}
+
+.leftPanel,
+.centerPanel,
+.mainContent,
+.sidebar {
+    border:0px red solid;
+    margin:2px;
+    padding:2px;
+}
+
+.leftPanel {
+    margin-top:0px;
+    width: 370px;
+    padding:1px;
+    border-right:1px gainsboro solid;
+    /*box-shadow: inset 0 0 3px gainsboro;*/
+    /*background: steelblue;*/
+}
+
+.breadcrumbs {
+    border-bottom:1px gainsboro solid;
+}
+
+.centerPanel {
+    width: 80%;
+}
+
+.mainContent {
+    padding:0px;
+}
+
+.sidebar {
+    margin:0px !important;
+    padding:0px;
+    /*box-shadow: 0 0px 0px rgba(0, 0, 0, 0) !important;*/
+}
+
+
+
+
+
+/***********************************/
+/**** Simple Form Table ************/
+/*.input-text-class {*/
+    /*width: 100%;*/
+    /*outline:0px #b0bed9 solid;*/
+    /*border:0px red solid;*/
+    /*border-bottom:1px gainsboro solid;*/
+    /*height: 40px;*/
+/*}*/
+
+/*.table_col {*/
+    /*font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;*/
+    /*font-size: 14px;*/
+    /*width: 100%;*/
+    /*background: white;*/
+    /*text-align: left;*/
+    /*border-collapse: collapse;*/
+    /*color: #3E4347;*/
+/*}*/
+/*.table_col th:first-child, .table_col td:first-child {*/
+    /*color: #F5F6F6;*/
+    /*border-left: none;*/
+/*}*/
+/*.table_col th {*/
+    /*font-weight: normal;*/
+    /*border-bottom: 2px solid #b0bed9 ;*/
+    /*border-right: 20px solid white;*/
+    /*border-left: 20px solid white;*/
+    /*padding: 8px 10px;*/
+/*}*/
+/*.table_col td {*/
+    /*border-right: 20px solid white;*/
+    /*border-left: 20px solid white;*/
+    /*padding: 8px 6px;*/
+    /*!*color: #8b8e91;*!*/
+    /*color: grey !important;*/
+    /*border-bottom: 1px grey solid;*/
+/*}*/
+
+/*.td-field-name {*/
+    /*width: 250px;*/
+    /*border-bottom:1px #b0bed9 solid !important;*/
+/*}*/
+
+/*.td-field-value{*/
+    /*padding:0px!important;*/
+    /*border:0px red solid !important;*/
+/*}*/
+
+/*.td-field-name div{*/
+    /*width: 100%;*/
+    /*border:0px red solid*/
+/*}*/
+
+/*.td-field-value div{*/
+    /*border:0px red solid*/
+/*}*/
+/*****End Simple Form Tbale *******/

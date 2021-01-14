@@ -1,0 +1,133 @@
+/************************/
+/****** INPUT TEXT  ****/
+
+/* Выравнивание по середине */
+.dws-wrapper {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Формы */
+.vInputText {
+    font-size: 15px;
+    margin:0px;
+    width: 100%;
+    /*background: white;*/
+    /*border: 1px solid #e9eaea;*/
+    /*padding: 12px 14px;*/
+    /*box-sizing: border-box;*/
+    /*margin-bottom: 0px;*/
+    /*color: #1e8da6;*/
+    /*outline: none;*/
+    /*border: 1px solid red;*/
+}
+
+/* Плавающий текст */
+.vFieldContainer {
+    width:210px;
+    position: relative;
+}
+
+/*Текстовое поле*/
+.vFieldContainer input {
+    border: none;
+    border-bottom: 1px solid #e9eaea;
+    padding: 10px 0 2px 4px;
+    height: 34px;
+    /*border:0px red solid;*/
+}
+
+/* Label */
+.vFieldContainer label {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding-top: 8px;
+    padding-left: 8px;
+    color: #c4c9c9;
+    transition: .5s;
+    pointer-events: none;
+    border:0px green solid;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.vFieldContainer input:focus ~ label,
+.vFieldContainer input:valid ~ label {
+    top: -16px;
+    font-size: 11px;
+    color: #4fa6d5;
+}
+
+.vFieldContainer input:focus,
+.vFieldContainer input:valid {
+    border-bottom:1px #4fa6d5 solid;
+    transition: .5s;
+}
+
+
+
+/************************/
+/*******  SELECT ********/
+
+.v-select-ul-menu  {
+
+    width: 100%; /* Ширина меню */
+    /*height:100%;*/
+    list-style: none; /* Для списка убираем маркеры */
+    margin: 0; /* Нет отступов вокруг */
+    padding: 0; /* Убираем поля вокруг текста */
+    font-family: Arial, sans-serif; /* Рубленый шрифт для текста меню */
+    font-size: 10pt; /* Размер названий в пункте меню */
+    z-index:45;
+    border-bottom: 1px solid #ccc; /* Линия снизу */
+
+    position: absolute; /* Подменю позиционируются абсолютно */
+    display : none;      /* Скрываем подменю */
+    margin-left: 0px;   /* Сдвигаем подменю вправо */
+    margin-top: -1px;   /* Сдвигаем подменю вверх */
+    width: 300px;
+    border: 1px gainsboro solid;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.v-select-li-item {
+    background: aliceblue;
+    border: 0px #ccc solid;
+    padding:0px 5px 0px 5px;
+}
+
+.v-select-li-item a {
+    display: block; /* Ссылка как блочный элемент */
+    padding: 5px; /* Поля вокруг надписи */
+    text-decoration: none; /* Подчеркивание у ссылок убираем */
+    color: #666; /* Цвет текста */
+    border: 0px solid #ccc;/* Рамка вокруг пунктов меню */
+    background-color: aliceblue; /* Цвет фона */
+    border-bottom: none; /* Границу снизу не проводим */
+
+    height: 30px;
+    padding: 2px 2px 2px 4px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.brd {
+    border-bottom: 1px solid #ccc; /* Линия снизу */
+}
+
+.v-select-li-item a:hover {
+    color: white !important; /* Цвет текста активного пункта */
+    background-color: #5488af; /* Цвет фона активного пункта */
+    /*background: #777;*/
+    /*box-shadow:10px 10px 10px rgba(0,0,0,0.8);*/
+}
+
+
+.v-select-a-link-item:hover {
+    color: white; /* Цвет текста активного пункта */
+    background-color: #5488af; /* Цвет фона активного пункта */
+}
