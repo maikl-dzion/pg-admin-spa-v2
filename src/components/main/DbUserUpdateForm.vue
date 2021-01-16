@@ -181,16 +181,12 @@ export default {
     ShowItemInfo,
   },
   data: () => ({
-
       showToggleJson : false,
       newPassword    : '',
       selectedDbName : '',
-    f1: [],
-
   }),
 
   computed: {
-
      ...mapGetters([
           'getDbList',
           'getUserList',
@@ -202,8 +198,13 @@ export default {
      },
   },
 
-  methods: {
+  created() {
+      this.fetchUserList(true).then(user => {
+          this.user_name = user.usename;
+      });
+  },
 
+  methods: {
     ...mapActions([
       'fetchDbList',
       'fetchUserList',

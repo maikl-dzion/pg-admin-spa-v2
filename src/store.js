@@ -107,6 +107,10 @@ export default new Vuex.Store({
        context.commit('setPreloader', newState)
     },
 
+    setCurrentTable(context, table) {
+      context.commit('setCurrentTable', table)
+    },
+
     async fetchDbList(context, dbName = null) {
       let url = '/SHOW_DATABASE_LIST'
       let dbList = await http.send(url)
@@ -127,24 +131,24 @@ export default new Vuex.Store({
     fetchDbItemInfo(context, data) {
       let dbList = data.dbList;
       let dbName = data.dbName;
-
       for (let i in dbList) {
           let dbInfo = dbList[i];
           if(dbInfo.datname != dbName) continue;
           context.commit('setDbItemInfo', dbInfo)
           return dbInfo;
       }
-
     },
 
-    setCurrentTable(context, table) {
-      context.commit('setCurrentTable', table)
-    },
-
-    async fetchUserList(context) {
+    async fetchUserList(context, firstLoad = false) {
       let url = '/getDbUsersList'
       let data = await http.send(url)
       context.commit('setUserList', data)
+      if(!firstLoad)
+        return false
+      for(let name in data) {
+        context.dispatch('fetchUserItemInfo', data[name])
+        return data[name];
+      }
     },
 
     fetchUserItemInfo(context, data) {
@@ -152,18 +156,30 @@ export default new Vuex.Store({
       let userName   = data.userName;
 
       for (let i in userList) {
-        let item = userList[i];
-        if(item.usename != userName) continue;
-        context.commit('setUserItemInfo', item)
-        return item;
+          let item = userList[i];
+          if(item.usename != userName) continue;
+          context.commit('setUserItemInfo', item)
+          return item;
       }
       return false;
     },
 
-    async fetchTableList(context) {
+    async fetchTableList(context, firstLoad = false) {
       let url = '/GET_TABLE_LIST'
       let data = await http.send(url)
       context.commit('setTableList', data)
+      if(firstLoad) {
+          for(let name in data) {
+            context.dispatch('fetchTableFields', name)
+            return name;
+          }
+      }
+    },
+
+    async fetchTableFields(context, tableName) {
+      const url = '/GET_TABLE_FIELDS/' + tableName
+      let data = await http.send(url)
+      context.commit('setTableFields', data)
     },
 
     async fetchDbRoles(context) {
@@ -190,12 +206,6 @@ export default new Vuex.Store({
       const url = '/GET_TABLE_DATA/' + tableName
       let data = await http.send(url)
       context.commit('setTableData', data)
-    },
-
-    async fetchTableFields(context, tableName) {
-      const url = '/GET_TABLE_FIELDS/' + tableName
-      let data = await http.send(url)
-      context.commit('setTableFields', data)
     },
 
     setParam(context, data) {

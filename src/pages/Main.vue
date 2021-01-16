@@ -89,13 +89,14 @@
         <!----------------------------->
         <!-- PAGE CONTENT WRAPPER  ---->
         <div class="page-wrapper" style="display: block;" >
-
+            <div style="margin-left:10px; padding:2px;" > Главная/{{commonActionName}}/{{commonItemName}}</div>
             <!---   Верхнее меню  --->
             <div class="page-breadcrumb" style="padding: 7px 7px 0px 7px; margin:0px;">
                 <div class="row align-items-center">
                     <div class="col-md-6 col-8 align-self-center">
                         <div class="d-flex align-items-center">
                             <nav><ul class="main-nav-ul" style="display: flex !important;">
+
                                   <tempate v-for="(title, fname) in panelSettingsMenu"  >
                                         <li v-if="fname == commonActionName" :key="fname"
                                              @click="commonAction(fname, $event, 'menu-active')"
@@ -107,8 +108,6 @@
                                             class="breadcrumb-item main-nav-li-item" >{{ title }}</li>
                                   </tempate>
 
-
-
                             </ul></nav>
                         </div>
                     </div>
@@ -116,15 +115,14 @@
             </div>
             <!---  /. Верхнее меню  --->
 
-
             <!-- Container fluid  -->
             <div class="container-fluid" style="margin:2px; padding:6px;" >
 
                     <template v-if="commonActionName == 'tables'">
-                        <TableFielsUpdateForm
+                        <TableUpdateForm
                                 :fields="commonItem"
                                 :table_name="tableName"
-                        ></TableFielsUpdateForm>
+                        ></TableUpdateForm>
                     </template>
                     <template v-else-if="commonActionName == 'databases'">
                         <DataBaseUpdateForm
@@ -148,7 +146,6 @@
                          <SqlEditor ></SqlEditor>
                     </template>
 
-
             </div> <!--- .container-fluid --->
             <!-- End Container fluid  -->
 
@@ -166,7 +163,7 @@
 
     import LeftPanel from '@/components/main/LeftSideBar'
 
-    import TableFielsUpdateForm from '@/components/main/TableUpdateForm'
+    import TableUpdateForm from '@/components/main/TableUpdateForm'
     import DataBaseUpdateForm   from '@/components/main/DataBaseUpdateForm'
     import DbUserUpdateForm    from "@/components/main/DbUserUpdateForm";
     import DbRoleUpdateForm    from "@/components/main/DbRoleUpdateForm";
@@ -174,7 +171,7 @@
     import SqlEditor from "@/components/SqlEditor"
 
     export default {
-        name: 'MainPage',
+        name: 'Main',
         data: () => ({
             selectUserName    : '',
             newPassword       : '',
@@ -183,7 +180,7 @@
 
         components: {
             LeftPanel,
-            TableFielsUpdateForm,
+            TableUpdateForm,
             DataBaseUpdateForm,
             DbUserUpdateForm,
             DbRoleUpdateForm,

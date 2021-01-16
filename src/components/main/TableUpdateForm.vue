@@ -162,7 +162,9 @@ export default {
   }),
 
   created () {
-      this.fetchTableList();
+      this.fetchTableList(true).then(name => {
+         this.table_name = name;
+      });
       // this.newRenameTableName = this.table_name;
   },
 
@@ -279,7 +281,9 @@ export default {
         this.getTableListSheme();
     }
 
-  } // methods
+  }, // methods
+
+
 }
 </script>
 

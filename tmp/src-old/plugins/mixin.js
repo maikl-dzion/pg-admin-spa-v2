@@ -265,11 +265,14 @@ const BaseMixin = {
                 },
 
                 commonAction(actionName, event = null, activeClass = 'activeClass') {
+
+                    this.commonActionName = actionName;
+                    this.commonItemName   = '';
+                    this.freeSqlCommandResult = '';
+
                     this.commonItem = [];
                     this.dbRoles    = [];
-                    this.commonItemName       = '';
-                    this.freeSqlCommandResult = '';
-                    this.commonActionName     = actionName;
+
                     let title = 'Левая панель'
 
                     switch (actionName) {
@@ -280,7 +283,7 @@ const BaseMixin = {
 
                         case 'tables' :
                             title = 'Таблицы';
-                            this.$store.dispatch('fetchTableList');
+                            this.$store.dispatch('fetchTableList', true);
                             break
 
                         case 'databases' :
