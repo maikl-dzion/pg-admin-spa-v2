@@ -16,8 +16,6 @@
               </div>
         </div></div>
 
-<!--        <pre>{{getDbItemInfo}}</pre>-->
-
       </div>
     </div>
 
@@ -52,13 +50,15 @@
                 <!---- / Скопировать базу --->
 
                 <!----- Удалить  базу --->
-                <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;">Удалить базу </h6>
-                <div class="input-group">
-                  <input v-model="db_name" type="text" class="form-control" disabled>
-                  <div class="input-group-append">
-                    <button @click="deleteDb(db_name)" class="btn btn-outline-danger" type="button" style="border-radius: 0px">Удалить базу</button>
+                <template v-if="!checkSystemName(db_name)" >
+                  <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;">Удалить базу </h6>
+                  <div class="input-group">
+                    <input v-model="db_name" type="text" class="form-control" disabled>
+                    <div class="input-group-append">
+                      <button @click="deleteDb(db_name)" class="btn btn-outline-danger" type="button" style="border-radius: 0px">Удалить базу</button>
+                    </div>
                   </div>
-                </div>
+                </template>
                 <!---- / Удалить  базу  --->
             </template>
 

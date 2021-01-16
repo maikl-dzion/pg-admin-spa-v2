@@ -27,6 +27,8 @@
           <TableFieldsEdit :table_name="table_name" />
           <!---- / Редактирование полей  --->
 
+<!--          <pre>{{getTableList}}</pre>-->
+
         </div><!--- ./col-lg-8 --->
 
         <!-------------------------->
@@ -160,10 +162,15 @@ export default {
   }),
 
   created () {
+      this.fetchTableList();
       // this.newRenameTableName = this.table_name;
   },
 
   computed: {
+
+      ...mapGetters([
+         'getTableList'
+      ]),
 
       tableFields() {
         return this.storeGet().getTableFields

@@ -67,13 +67,15 @@
                 <!---- / Удалить  пользователя  --->
 
                 <!----- Удалить пользователя --->
-                <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;"> Удалить пользователя </h6>
-                <div class="input-group">
-                  <input v-model="user_name" type="text" class="form-control" disabled>
-                  <div class="input-group-append">
-                       <button @click="deleteDbUser(user_name)" class="btn btn-outline-danger" type="button" style="border-radius: 0px">Удалить пользователя</button>
+               <template v-if="!checkSystemName(user_name)">
+                  <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;"> Удалить пользователя </h6>
+                  <div class="input-group">
+                    <input v-model="user_name" type="text" class="form-control" disabled>
+                    <div class="input-group-append">
+                         <button @click="deleteDbUser(user_name)" class="btn btn-outline-danger" type="button" style="border-radius: 0px">Удалить пользователя</button>
+                    </div>
                   </div>
-                </div>
+               </template>
                 <!---- / Удалить  пользователя  --->
 
             </template>

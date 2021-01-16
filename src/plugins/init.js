@@ -127,7 +127,6 @@ const InitApp = {
                 }
             },
 
-
             methods: {
 
                 createElemId(name = '') {
@@ -204,10 +203,24 @@ const InitApp = {
                     return true
                 },
 
+                checkSystemName(name) {
+                    let check = false;
+                    switch (name) {
+                      case 'template1' :
+                      case 'template0' :
+                      case 'postgres'  :
+                      case 'maikldb'   :
+                      case 'w1user'    :
+                           check = true;
+                           break;
+                    }
+                    return check;
+                },
+
                 inputFormItem(data) {
-                    let item = data.item
-                    let fname = data.fname
-                    console.log(data)
+                    let item = data.item;
+                    let fname = data.fname;
+                    console.log(data);
                 },
 
                 /// ////////////////

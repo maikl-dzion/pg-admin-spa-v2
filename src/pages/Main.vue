@@ -96,10 +96,19 @@
                     <div class="col-md-6 col-8 align-self-center">
                         <div class="d-flex align-items-center">
                             <nav><ul class="main-nav-ul" style="display: flex !important;">
-                                    <li  v-for="(title, fname) in panelSettingsMenu" :key="fname"
-                                         @click="commonAction(fname, $event, 'menu-active')"
-                                         style="cursor: pointer; font-size: 14px; color: grey;"
-                                         class="breadcrumb-item main-nav-li-item" >{{ title }}</li>
+                                  <tempate v-for="(title, fname) in panelSettingsMenu"  >
+                                        <li v-if="fname == commonActionName" :key="fname"
+                                             @click="commonAction(fname, $event, 'menu-active')"
+                                             style="cursor: pointer; font-size: 14px; color: grey;"
+                                             class="breadcrumb-item main-nav-li-item menu-active" >{{ title }}</li>
+                                        <li v-else :key="fname"
+                                            @click="commonAction(fname, $event, 'menu-active')"
+                                            style="cursor: pointer; font-size: 14px; color: grey;"
+                                            class="breadcrumb-item main-nav-li-item" >{{ title }}</li>
+                                  </tempate>
+
+
+
                             </ul></nav>
                         </div>
                     </div>
@@ -167,11 +176,9 @@
     export default {
         name: 'MainPage',
         data: () => ({
-
             selectUserName    : '',
             newPassword       : '',
             mainLeftPanelInfo : {},
-
         }),
 
         components: {
@@ -217,47 +224,47 @@
         },
 
         methods : {
-            createLeftPanelInfo(commonActionName) {
-
-                this.mainLeftPanelInfo = {
-
-                    databases : {
-                        items    : this.getDbList,
-                        delete   : this.deleteDb,
-                        select   : this.commonForm,
-                        title    : 'datname',
-                        icon     : 'mdi-database',
-                        action   : 'databases',
-                    },
-
-                    tables : {
-                        items    : this.getDbTables,
-                        delete   : this.commonDeleteTable,
-                        select   : this.commonForm,
-                        title    : 'table_name',
-                        icon     : 'mdi-table',
-                        action   : 'tables',
-                    },
-
-                    users : {
-                        items    : this.getUserList,
-                        delete   : this.deleteDbUser,
-                        select   : this.commonForm,
-                        title    : 'usename',
-                        icon     : 'mdi-account',
-                        action   : 'users',
-                    },
-
-                    get_roles : {
-                        items    : this.getDbRoles,
-                        delete   : null,
-                        select   : this.commonForm,
-                        title    : 'rolname',
-                        icon     : 'mdi-account-key',
-                        action   : 'get_roles',
-                    },
-                };
-            },
+            // createLeftPanelInfo(commonActionName) {
+            //
+            //     this.mainLeftPanelInfo = {
+            //
+            //         databases : {
+            //             items    : this.getDbList,
+            //             delete   : this.deleteDb,
+            //             select   : this.commonForm,
+            //             title    : 'datname',
+            //             icon     : 'mdi-database',
+            //             action   : 'databases',
+            //         },
+            //
+            //         tables : {
+            //             items    : this.getDbTables,
+            //             delete   : this.commonDeleteTable,
+            //             select   : this.commonForm,
+            //             title    : 'table_name',
+            //             icon     : 'mdi-table',
+            //             action   : 'tables',
+            //         },
+            //
+            //         users : {
+            //             items    : this.getUserList,
+            //             delete   : this.deleteDbUser,
+            //             select   : this.commonForm,
+            //             title    : 'usename',
+            //             icon     : 'mdi-account',
+            //             action   : 'users',
+            //         },
+            //
+            //         get_roles : {
+            //             items    : this.getDbRoles,
+            //             delete   : null,
+            //             select   : this.commonForm,
+            //             title    : 'rolname',
+            //             icon     : 'mdi-account-key',
+            //             action   : 'get_roles',
+            //         },
+            //     };
+            // },
         },
 
     }
