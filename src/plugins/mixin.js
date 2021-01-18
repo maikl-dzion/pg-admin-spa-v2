@@ -1,3 +1,5 @@
+
+
 const BaseMixin = {
 
     install(Vue, options) {
@@ -122,6 +124,8 @@ const BaseMixin = {
             },
 
             methods: {
+
+
 
                 // ######################################
                 // Общие Функции
@@ -265,7 +269,9 @@ const BaseMixin = {
                     this.commonItemName       = '';
                     this.freeSqlCommandResult = '';
                     this.commonActionName     = actionName;
-                    let title = 'Левая панель'
+                    let title = 'Левая панель';
+
+                    this.$store.dispatch('setCommonActionName', this.commonActionName);
 
                     switch (actionName) {
                         case 'users' :
@@ -280,6 +286,7 @@ const BaseMixin = {
                             this.$store.dispatch('fetchTableList', true).then(resp => {
                                 if(!resp) return false
                                 this.commonForm(resp.item);
+                                this.table_name = resp.name;
                             });
                             break
 
@@ -341,6 +348,8 @@ const BaseMixin = {
                     }
 
                     this.commonItemName = itemName
+                    this.$store.dispatch('setCommonItemName', this.commonItemName);
+
                 },
 
                 commonDeleteField(fieldName, tableName = null) {

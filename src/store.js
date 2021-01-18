@@ -345,7 +345,7 @@ export default new Vuex.Store({
       return state.commonActionName;
     },
 
-    setCommonItemName: state => {
+    getCommonItemName: state => {
       return state.commonItemName;
     },
 

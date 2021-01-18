@@ -162,10 +162,13 @@ export default {
   }),
 
   created () {
-      this.fetchTableList(true).then(name => {
-         this.table_name = name;
-      });
-      // this.newRenameTableName = this.table_name;
+
+      // this.fetchTableList(true).then(name => {
+      //    this.table_name = name;
+      // });
+
+     this.componentMenuActionRun('tables');
+    // this.newRenameTableName = this.table_name;
   },
 
   computed: {

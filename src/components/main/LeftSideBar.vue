@@ -1,5 +1,6 @@
 <template>
 <div>
+<!--    <pre>{{getCommonItemName}}</pre>-->
 <!--    <pre>{{items}}</pre>-->
     <ul id="sidebarnav">
 
@@ -9,12 +10,22 @@
           class="sidebar-item" style="display: flex">
 
           <!--- Выбор элемента --->
-          <a @click="selectEmit(item, $event)"
-             class="sidebar-link waves-effect waves-dark sidebar-link leftPanelContentBox"
-             style="width:85%; padding:0px; margin:0px; border-radius: 0px">
-              <div class="leftPanelIcon"><i :class="'mdi mr-2 ' + icon"></i></div>
-              <div class="hide-menu leftPanelTitle" style="">{{ item[title] }}</div>
-          </a>
+          <template v-if="item[title] == getCommonItemName">
+              <a @click="selectEmit(item, $event)"
+                 class="sidebar-link waves-effect waves-dark sidebar-link leftPanelContentBox leftPanelContentBoxActive"
+                 style="width:85%; padding:0px; margin:0px; border-radius: 0px">
+                  <div class="leftPanelIcon"><i :class="'mdi mr-2 ' + icon"></i></div>
+                  <div class="hide-menu leftPanelTitle" style="">{{ item[title] }}</div>
+              </a>
+          </template>
+          <template v-else >
+              <a @click="selectEmit(item, $event)"
+                 class="sidebar-link waves-effect waves-dark sidebar-link leftPanelContentBox"
+                 style="width:85%; padding:0px; margin:0px; border-radius: 0px">
+                  <div class="leftPanelIcon"><i :class="'mdi mr-2 ' + icon"></i></div>
+                  <div class="hide-menu leftPanelTitle" style="">{{ item[title] }}</div>
+              </a>
+          </template>
 
           <!--- Удаление --->
           <div class="hide-menu leftPanelDeleteBox" title="Удалить"
@@ -36,9 +47,17 @@
 export default {
   name: 'LefSidetBar',
   props: ['items', 'icon', 'title', 'action'],
+
   data: () => ({
     activeClass: 'leftPanelContentBoxActive'
   }),
+
+  computed: {
+      getCommonItemName() {
+         return this.$store.getters.getCommonItemName;
+      },
+  },
+
   methods: {
 
     selectEmit(item, event) {
