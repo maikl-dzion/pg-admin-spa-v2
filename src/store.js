@@ -53,12 +53,24 @@ export default new Vuex.Store({
     dbItemInfo : [],
     userItemInfo : [],
     roleItemInfo : [],
+
+    commonActionName : '',
+    commonItemName   : '',
+
   },
   mutations: {
 
     setPreloader(state, newState) {
        // state.preloader = !state.preloader
        state.preloader = newState
+    },
+
+    setCommonActionName(state, value) {
+       state.commonActionName = value
+    },
+
+    setCommonItemName(state, value) {
+       state.commonItemName = value
     },
 
     setDbList(state, data) {
@@ -97,9 +109,10 @@ export default new Vuex.Store({
     },
     setParam(state, data) {
       const value = data.value
-      const name = data.name
+      const name  = data.name
       state[name] = value
-    }
+    },
+
   },
   actions: {
 
@@ -111,6 +124,40 @@ export default new Vuex.Store({
       context.commit('setCurrentTable', table)
     },
 
+    setCommonActionName(context, value) {
+       context.commit('setCommonActionName', value)
+    },
+
+    setCommonItemName(context, value) {
+       context.commit('setCommonItemName', value)
+    },
+
+    fetchItemFor(context, data) {
+        const items = data.items;
+        const fn    = data.fn;
+
+        let name, value = '';
+        if(data.name) name  = data.name;
+        if(data.value) value = data.value;
+
+        if(name && value) {
+          for (let i in items) {
+            let item = items[i];
+            if(item[name] != value) continue;
+            context.commit(fn, item)
+            return item;
+          }
+        } else {
+          for (let i in items) {
+            let item = items[i];
+            context.commit(fn, item)
+            return item;
+          }
+        }
+        return false;
+    },
+
+    // Получить все база
     async fetchDbList(context, dbName = null) {
       let url = '/SHOW_DATABASE_LIST'
       let dbList = await http.send(url)
@@ -119,15 +166,19 @@ export default new Vuex.Store({
       if(!dbName)
         return false;
 
-      for (let i in dbList) {
-          let dbInfo = dbList[i];
-          if(dbInfo.datname != dbName) continue;
-          context.commit('setDbItemInfo', dbInfo)
-          return dbInfo;
+      const data = { items : dbList, fn : 'setDbItemInfo'};
+
+      if(dbName == 'first_load') {
+        return context.dispatch('fetchItemFor', data);
+      } else {
+        data['name']  = 'datname';
+        data['value'] = dbName;
+        return context.dispatch('fetchItemFor', data);
       }
       return false;
     },
 
+    // Получить информацию о базе
     fetchDbItemInfo(context, data) {
       let dbList = data.dbList;
       let dbName = data.dbName;
@@ -139,41 +190,45 @@ export default new Vuex.Store({
       }
     },
 
+    // Получить всех пользователей
     async fetchUserList(context, firstLoad = false) {
       let url = '/getDbUsersList'
       let data = await http.send(url)
       context.commit('setUserList', data)
       if(!firstLoad)
-        return false
-      for(let name in data) {
-        context.dispatch('fetchUserItemInfo', data[name])
-        return data[name];
-      }
+          return false
+
+      const info = { items : data, fn : 'setUserItemInfo'};
+      return context.dispatch('fetchItemFor', info);
     },
 
+    // Получить 1 пользователя
     fetchUserItemInfo(context, data) {
-      let userList = context.state.userList
-      let userName   = data.userName;
-
-      for (let i in userList) {
-          let item = userList[i];
-          if(item.usename != userName) continue;
-          context.commit('setUserItemInfo', item)
-          return item;
-      }
-      return false;
+        let userList = context.state.userList
+        let userName = data.userName;
+        for (let i in userList) {
+            let item = userList[i];
+            if(item.usename != userName) continue;
+            context.commit('setUserItemInfo', item)
+            return item;
+        }
+        return false;
     },
 
     async fetchTableList(context, firstLoad = false) {
       let url = '/GET_TABLE_LIST'
       let data = await http.send(url)
       context.commit('setTableList', data)
-      if(firstLoad) {
-          for(let name in data) {
-            context.dispatch('fetchTableFields', name)
-            return name;
-          }
+      if(!firstLoad)
+        return false
+
+      for(let name in data) {
+        let item = data[name];
+        context.commit('setTableFields', item)
+        return { name, item };
       }
+
+      return false;
     },
 
     async fetchTableFields(context, tableName) {
@@ -214,30 +269,31 @@ export default new Vuex.Store({
 
     async saveAddFields(context, data) {
 
-      let table = data.table;
-      let fields = data.fields;
-      let resp = [];
+        let table = data.table;
+        let fields = data.fields;
+        let resp = [];
 
-      if (!table) {
-        alert('Нет имени таблицы');
-        return false
-      }
+        if (!table) {
+          alert('Нет имени таблицы');
+          return false
+        }
 
-      for (let i in fields) {
-        let item = fields[i];
-        if (!item.name)
-          continue;
-        let url = '/ADD_FIELD/' + table + '/' + item.name + '/' + item.type;
-        let r = await http.send(url)
-        resp.push(r);
-      }
+        for (let i in fields) {
+          let item = fields[i];
+          if (!item.name)
+            continue;
+          let url = '/ADD_FIELD/' + table + '/' + item.name + '/' + item.type;
+          let r = await http.send(url)
+          resp.push(r);
+        }
 
-      let apiUrl = '/GET_TABLE_FIELDS/' + table;
-      let items = await http.send(apiUrl)
-      context.commit('setTableFields', items);
+        let apiUrl = '/GET_TABLE_FIELDS/' + table;
+        let items = await http.send(apiUrl)
+        context.commit('setTableFields', items);
 
-      return resp;
-    }
+        return resp;
+    },
+
   },
   getters: {
 
@@ -284,5 +340,14 @@ export default new Vuex.Store({
     getParam: (state, name) => {
       return state[name]
     },
+
+    getCommonActionName: state => {
+      return state.commonActionName;
+    },
+
+    setCommonItemName: state => {
+      return state.commonItemName;
+    },
+
   }
 })

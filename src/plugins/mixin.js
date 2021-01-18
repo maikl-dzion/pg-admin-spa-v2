@@ -259,7 +259,7 @@ const BaseMixin = {
                     })
                 },
 
-                commonAction(actionName, event = null, activeClass = 'activeClass') {
+                componentMenuActionRun(actionName, event = null, activeClass = 'activeClass') {
                     this.commonItem = [];
                     this.dbRoles    = [];
                     this.commonItemName       = '';
@@ -270,24 +270,29 @@ const BaseMixin = {
                     switch (actionName) {
                         case 'users' :
                             title = 'Пользователи';
-                            this.$store.dispatch('fetchUserList');
+                            this.$store.dispatch('fetchUserList', true).then(item => {
+                                this.commonForm(item);
+                            });
                             break
 
                         case 'tables' :
                             title = 'Таблицы';
-                            this.$store.dispatch('fetchTableList');
+                            this.$store.dispatch('fetchTableList', true).then(resp => {
+                                if(!resp) return false
+                                this.commonForm(resp.item);
+                            });
                             break
 
                         case 'databases' :
                             title = 'Базы';
-                            this.$store.dispatch('fetchDbList');
+                            this.$store.dispatch('fetchDbList', 'first_load').then(item => {
+                                 this.commonForm(item);
+                            });
                             break
 
                         case 'get_roles' :
                             title = 'Роли'
-                            this.sqlCommandRun(actionName)
-                            // this.sqlCommand = 'SELECT * FROM pg_roles'
-                            // this.execSqlCommand('dbRoles', response => {})
+                            this.sqlCommandRun(actionName);
                             break
                     }
 
@@ -296,7 +301,6 @@ const BaseMixin = {
                         this.setActiveElement(event, activeClass)
 
                     this.createLeftPanelInfo(this.commonActionName);
-
                 },
 
                 commonForm(item, fname = null) {

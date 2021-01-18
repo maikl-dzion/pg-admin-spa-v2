@@ -89,29 +89,28 @@
         <!----------------------------->
         <!-- PAGE CONTENT WRAPPER  ---->
         <div class="page-wrapper" style="display: block;" >
-            <div style="margin-left:10px; padding:2px;" > Главная/{{commonActionName}}/{{commonItemName}}</div>
+
             <!---   Верхнее меню  --->
-            <div class="page-breadcrumb" style="padding: 7px 7px 0px 7px; margin:0px;">
-                <div class="row align-items-center">
-                    <div class="col-md-6 col-8 align-self-center">
-                        <div class="d-flex align-items-center">
-                            <nav><ul class="main-nav-ul" style="display: flex !important;">
+            <div class="page-breadcrumb" style="padding: 0px; margin:0px;">
+                    <div style="margin-left:5px; padding:2px; font-style: italic; font-size: 11px" > Главная / {{commonActionName}} / {{commonItemName}}</div>
+                    <!-- <div class="row align-items-center"><div class="col-md-6 col-8 align-self-center"><div class="d-flex align-items-center">-->
+                    <ul class="main-nav-ul" style="display: flex !important; border-bottom:1px gainsboro solid; margin-top:10px;">
 
-                                  <tempate v-for="(title, fname) in panelSettingsMenu"  >
-                                        <li v-if="fname == commonActionName" :key="fname"
-                                             @click="commonAction(fname, $event, 'menu-active')"
-                                             style="cursor: pointer; font-size: 14px; color: grey;"
-                                             class="breadcrumb-item main-nav-li-item menu-active" >{{ title }}</li>
-                                        <li v-else :key="fname"
-                                            @click="commonAction(fname, $event, 'menu-active')"
-                                            style="cursor: pointer; font-size: 14px; color: grey;"
-                                            class="breadcrumb-item main-nav-li-item" >{{ title }}</li>
-                                  </tempate>
+                          <tempate v-for="(title, fname) in panelSettingsMenu"  >
+<!--                                        <li v-if="fname == commonActionName" :key="fname"-->
+<!--                                             @click="componentMenuActionRun(fname, $event, 'menu-active')"-->
+<!--                                             style="cursor: pointer; font-size: 14px; color: grey;"-->
+<!--                                             class="breadcrumb-item main-nav-li-item menu-active" >{{ title }}</li>-->
 
-                            </ul></nav>
-                        </div>
-                    </div>
-                </div>
+                                <li :key="fname"
+                                    @click="componentMenuActionRun(fname, $event, 'menu-active')"
+                                    style="cursor: pointer; font-size: 14px; color: grey;"
+                                    class="breadcrumb-item main-nav-li-item" >{{ title }}</li>
+
+                          </tempate>
+
+                    </ul>
+                    <!--  </div></div></div>-->
             </div>
             <!---  /. Верхнее меню  --->
 
