@@ -1,30 +1,23 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import User from './store/users';
 
 Vue.use(Vuex);
 
 class HttpService {
-
   constructor(apiUrl) {
     this.apiUrl = apiUrl
   }
 
   async send(url, method = 'get', data = null) {
-
-      const apiUrl = this.apiUrl + url
-
-      // this.$store.state.preloader = true;
-      let response = await fetch(apiUrl)
-      // this.$store.state.preloader = false;
-
-      if (response.ok) {
-        const result = await response.json()
-        return result.data
-      }
-
-      alert('Ошибка HTTP: ' + response.status)
+    const apiUrl = this.apiUrl + url
+    let response = await fetch(apiUrl)
+    if (response.ok) {
+      const result = await response.json()
+      return result.data
+    }
+    alert('Ошибка HTTP: ' + response.status)
   }
-
 }
 
 const http = new HttpService(apiUrl);
@@ -32,11 +25,11 @@ const http = new HttpService(apiUrl);
 export default new Vuex.Store({
   state: {
 
-    preloader : false,
+    preloader: false,
 
-    tableName : '',
-    dbName    : '',
-    userName  : '',
+    tableName: '',
+    dbName: '',
+    userName: '',
 
     currentUser: '',
     currentDb: '',
@@ -44,33 +37,33 @@ export default new Vuex.Store({
     currentConfig: {},
 
     dababaseList: [],
-    userList    : [],
-    tableList   : [],
-    dbRoles     : [],
-    tableData   : [],
-    tableFields : {},
+    userList: [],
+    tableList: [],
+    dbRoles: [],
+    tableData: [],
+    tableFields: {},
 
-    dbItemInfo : [],
-    userItemInfo : [],
-    roleItemInfo : [],
+    dbItemInfo: [],
+    userItemInfo: [],
+    roleItemInfo: [],
 
-    commonActionName : '',
-    commonItemName   : '',
+    commonActionName: '',
+    commonItemName: '',
 
   },
   mutations: {
 
     setPreloader(state, newState) {
-       // state.preloader = !state.preloader
-       state.preloader = newState
+      // state.preloader = !state.preloader
+      state.preloader = newState
     },
 
     setCommonActionName(state, value) {
-       state.commonActionName = value
+      state.commonActionName = value
     },
 
     setCommonItemName(state, value) {
-       state.commonItemName = value
+      state.commonItemName = value
     },
 
     setDbList(state, data) {
@@ -109,15 +102,16 @@ export default new Vuex.Store({
     },
     setParam(state, data) {
       const value = data.value
-      const name  = data.name
+      const name = data.name
       state[name] = value
     },
 
   },
+  //////////////////
   actions: {
 
     changePreloader(context, newState = null) {
-       context.commit('setPreloader', newState)
+      context.commit('setPreloader', newState)
     },
 
     setCurrentTable(context, table) {
@@ -125,36 +119,36 @@ export default new Vuex.Store({
     },
 
     setCommonActionName(context, value) {
-       context.commit('setCommonActionName', value)
+      context.commit('setCommonActionName', value)
     },
 
     setCommonItemName(context, value) {
-       context.commit('setCommonItemName', value)
+      context.commit('setCommonItemName', value)
     },
 
     fetchItemFor(context, data) {
-        const items = data.items;
-        const fn    = data.fn;
+      const items = data.items;
+      const fn = data.fn;
 
-        let name, value = '';
-        if(data.name) name  = data.name;
-        if(data.value) value = data.value;
+      let name, value = '';
+      if (data.name) name = data.name;
+      if (data.value) value = data.value;
 
-        if(name && value) {
-          for (let i in items) {
-            let item = items[i];
-            if(item[name] != value) continue;
-            context.commit(fn, item)
-            return item;
-          }
-        } else {
-          for (let i in items) {
-            let item = items[i];
-            context.commit(fn, item)
-            return item;
-          }
+      if (name && value) {
+        for (let i in items) {
+          let item = items[i];
+          if (item[name] != value) continue;
+          context.commit(fn, item)
+          return item;
         }
-        return false;
+      } else {
+        for (let i in items) {
+          let item = items[i];
+          context.commit(fn, item)
+          return item;
+        }
+      }
+      return false;
     },
 
     // Получить все база
@@ -163,15 +157,15 @@ export default new Vuex.Store({
       let dbList = await http.send(url)
       context.commit('setDbList', dbList)
 
-      if(!dbName)
+      if (!dbName)
         return false;
 
-      const data = { items : dbList, fn : 'setDbItemInfo'};
+      const data = {items: dbList, fn: 'setDbItemInfo'};
 
-      if(dbName == 'first_load') {
+      if (dbName == 'first_load') {
         return context.dispatch('fetchItemFor', data);
       } else {
-        data['name']  = 'datname';
+        data['name'] = 'datname';
         data['value'] = dbName;
         return context.dispatch('fetchItemFor', data);
       }
@@ -183,10 +177,10 @@ export default new Vuex.Store({
       let dbList = data.dbList;
       let dbName = data.dbName;
       for (let i in dbList) {
-          let dbInfo = dbList[i];
-          if(dbInfo.datname != dbName) continue;
-          context.commit('setDbItemInfo', dbInfo)
-          return dbInfo;
+        let dbInfo = dbList[i];
+        if (dbInfo.datname != dbName) continue;
+        context.commit('setDbItemInfo', dbInfo)
+        return dbInfo;
       }
     },
 
@@ -195,37 +189,37 @@ export default new Vuex.Store({
       let url = '/getDbUsersList'
       let data = await http.send(url)
       context.commit('setUserList', data)
-      if(!firstLoad)
-          return false
+      if (!firstLoad)
+        return false
 
-      const info = { items : data, fn : 'setUserItemInfo'};
+      const info = {items: data, fn: 'setUserItemInfo'};
       return context.dispatch('fetchItemFor', info);
     },
 
     // Получить 1 пользователя
     fetchUserItemInfo(context, data) {
-        let userList = context.state.userList
-        let userName = data.userName;
-        for (let i in userList) {
-            let item = userList[i];
-            if(item.usename != userName) continue;
-            context.commit('setUserItemInfo', item)
-            return item;
-        }
-        return false;
+      let userList = context.state.userList
+      let userName = data.userName;
+      for (let i in userList) {
+        let item = userList[i];
+        if (item.usename != userName) continue;
+        context.commit('setUserItemInfo', item)
+        return item;
+      }
+      return false;
     },
 
     async fetchTableList(context, firstLoad = false) {
       let url = '/GET_TABLE_LIST'
       let data = await http.send(url)
       context.commit('setTableList', data)
-      if(!firstLoad)
+      if (!firstLoad)
         return false
 
-      for(let name in data) {
+      for (let name in data) {
         let item = data[name];
         context.commit('setTableFields', item)
-        return { name, item };
+        return {name, item};
       }
 
       return false;
@@ -246,11 +240,11 @@ export default new Vuex.Store({
 
     fetchRoleItemInfo(context, data) {
       let items = context.state.dbRoles;
-      let name  = data.roleName;
+      let name = data.roleName;
 
       for (let i in items) {
         let item = items[i];
-        if(item.rolname != name) continue;
+        if (item.rolname != name) continue;
         context.commit('setRoleItemInfo', item)
         return item;
       }
@@ -269,32 +263,33 @@ export default new Vuex.Store({
 
     async saveAddFields(context, data) {
 
-        let table = data.table;
-        let fields = data.fields;
-        let resp = [];
+      let table = data.table;
+      let fields = data.fields;
+      let resp = [];
 
-        if (!table) {
-          alert('Нет имени таблицы');
-          return false
-        }
+      if (!table) {
+        alert('Нет имени таблицы');
+        return false
+      }
 
-        for (let i in fields) {
-          let item = fields[i];
-          if (!item.name)
-            continue;
-          let url = '/ADD_FIELD/' + table + '/' + item.name + '/' + item.type;
-          let r = await http.send(url)
-          resp.push(r);
-        }
+      for (let i in fields) {
+        let item = fields[i];
+        if (!item.name)
+          continue;
+        let url = '/ADD_FIELD/' + table + '/' + item.name + '/' + item.type;
+        let r = await http.send(url)
+        resp.push(r);
+      }
 
-        let apiUrl = '/GET_TABLE_FIELDS/' + table;
-        let items = await http.send(apiUrl)
-        context.commit('setTableFields', items);
+      let apiUrl = '/GET_TABLE_FIELDS/' + table;
+      let items = await http.send(apiUrl)
+      context.commit('setTableFields', items);
 
-        return resp;
+      return resp;
     },
 
   },
+  //////////////////
   getters: {
 
     getUserList: state => {
@@ -349,5 +344,8 @@ export default new Vuex.Store({
       return state.commonItemName;
     },
 
+  },
+  modules: {
+    User
   }
 })

@@ -7,20 +7,6 @@
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
 
-<!--                  <pre>{{mainLeftPanelInfo[commonActionName]}}</pre>-->
-
-<!--                  <template v-if="mainLeftPanelInfo[commonActionName]" >-->
-<!--                      <left-panel-->
-<!--                          :items="mainLeftPanelInfo[commonActionName].items"-->
-<!--                          @delete_item="mainLeftPanelInfo[commonActionName].delete"-->
-<!--                          @select_item="mainLeftPanelInfo[commonActionName].select"-->
-<!--                          :title="mainLeftPanelInfo[commonActionName].title"-->
-<!--                          :icon="mainLeftPanelInfo[commonActionName].icon"-->
-<!--                          :action="commonActionName"-->
-<!--                      ></left-panel>-->
-<!--                  </template>-->
-
-
                     <template v-if="commonActionName == 'databases'">
                         <left-panel
                                 :items="getDbList"
@@ -91,21 +77,18 @@
         <div class="page-wrapper" style="display: block;" >
 
             <!---   Верхнее меню  --->
-            <div class="page-breadcrumb" style="padding: 0px; margin:0px;">
+            <div class="page-breadcrumb" style="padding: 0px; margin:0px; ">
                     <div style="margin-left:5px; padding:2px; font-style: italic; font-size: 11px" > Главная / {{commonActionName}} / {{commonItemName}}</div>
                     <!-- <div class="row align-items-center"><div class="col-md-6 col-8 align-self-center"><div class="d-flex align-items-center">-->
-                    <ul class="main-nav-ul" style="display: flex !important; border-bottom:1px gainsboro solid; margin-top:10px;">
+                    <ul class="main-nav-ul" style="display: flex !important; border-bottom:1px gainsboro solid; margin:0px; margin-top:5px;">
 
                           <tempate v-for="(title, fname) in panelSettingsMenu"  >
-<!--                                        <li v-if="fname == commonActionName" :key="fname"-->
-<!--                                             @click="componentMenuActionRun(fname, $event, 'menu-active')"-->
-<!--                                             style="cursor: pointer; font-size: 14px; color: grey;"-->
-<!--                                             class="breadcrumb-item main-nav-li-item menu-active" >{{ title }}</li>-->
-
                                 <li :key="fname"
                                     @click="componentMenuActionRun(fname, $event, 'menu-active')"
-                                    style="cursor: pointer; font-size: 14px; color: grey;"
-                                    class="breadcrumb-item main-nav-li-item" >{{ title }}</li>
+                                    class="breadcrumb-item main-nav-li-item" style="min-width: 100px; border-right: #1e88e5 0px solid">
+                                    <div style="cursor: pointer; font-size: 16px; color: black !important; width:100%; border: 0px red solid; text-align: center;" >
+                                      {{ title }}
+                                    </div></li>
 
                           </tempate>
 

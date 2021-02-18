@@ -46,7 +46,7 @@
 
             <ul class="navbar-nav d-lg-none d-md-block ">
               <li class="nav-item">
-                <a class="nav-toggler nav-link waves-effect waves-light text-white " href="javascript:void(0)"><i
+                <a class="nav-toggler nav-link waves-effect waves-light text-white" ><i
                   class="ti-menu ti-close"></i></a>
               </li>
             </ul>
@@ -60,7 +60,7 @@
                       <router-link
                         v-for="(item) in routes"
                         tag="li" :to="item.path" class="top-menu-item">
-                          <a>{{ item.title }}</a>
+                          <a style="font-size: 17px">{{ item.title }}</a>
                       </router-link>
                     </ul>
                   </nav>

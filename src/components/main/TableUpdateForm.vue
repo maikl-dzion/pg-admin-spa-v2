@@ -162,26 +162,17 @@ export default {
   }),
 
   created () {
-
-      // this.fetchTableList(true).then(name => {
-      //    this.table_name = name;
-      // });
-
      this.componentMenuActionRun('tables');
-    // this.newRenameTableName = this.table_name;
   },
 
   computed: {
 
-      ...mapGetters([
-         'getTableList'
-      ]),
+      // ...mapGetters(['getTableList']),
 
       tableFields() {
         return this.storeGet().getTableFields
       },
 
-      // ...mapGetters(['getTableFields'])
   },
 
   methods: {

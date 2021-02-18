@@ -307,7 +307,7 @@ const BaseMixin = {
                     if (event)
                         this.setActiveElement(event, activeClass)
 
-                    this.createLeftPanelInfo(this.commonActionName);
+                    //this.createLeftPanelInfo(this.commonActionName);
                 },
 
                 commonForm(item, fname = null) {

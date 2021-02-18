@@ -5,6 +5,7 @@
       <div class="col-lg-12 col-md-8">
 
         <div class="card"><div class="card-body" >
+
               <div v-if="db_name">
                   <span style="font-style: italic;">Выбранная база : </span>
                   <span style="color:green;margin-left:10px;" >{{db_name}}</span>
@@ -14,6 +15,7 @@
                   <span style="font-style: italic;">Пользователи базы : </span>
                   <span style="color:green;margin-left:10px;" >{{datacl}}</span>
               </div>
+
         </div></div>
 
       </div>
@@ -151,7 +153,6 @@ export default {
       newCopyDbName   : '',
       newRenameDbName : '',
       userName        :  '',
-      // attachedUsers : [],
   }),
 
   components : {
@@ -159,6 +160,7 @@ export default {
   },
 
   computed: {
+
      ...mapGetters([
           'getDbList',
           'getUserList',
@@ -194,6 +196,8 @@ export default {
     },
 
     getAttachedDbUsers() {
+
+         if(!this.datacl) return [];
 
          let datacl = this.datacl;
          let items = [];
