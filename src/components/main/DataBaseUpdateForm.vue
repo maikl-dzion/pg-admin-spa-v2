@@ -3,9 +3,7 @@
 
     <div class="row">
       <div class="col-lg-12 col-md-8">
-
         <div class="card"><div class="card-body" >
-
               <div v-if="db_name">
                   <span style="font-style: italic;">Выбранная база : </span>
                   <span style="color:green;margin-left:10px;" >{{db_name}}</span>
@@ -15,9 +13,7 @@
                   <span style="font-style: italic;">Пользователи базы : </span>
                   <span style="color:green;margin-left:10px;" >{{datacl}}</span>
               </div>
-
         </div></div>
-
       </div>
     </div>
 
@@ -40,6 +36,18 @@
             <!------ / Создать новую базу --->
 
             <template v-if="db_name" >
+
+              <!------  Сделать dump базы  --->
+              <h6 class="card-title my-custom-card-title"
+                  style="font-size: 15px; font-weight: bolder;  margin-top:10px;">Сделать dump базы</h6>
+              <div class="input-group">
+                  <button @click="getDbDumpFile()" class="btn btn-outline-secondary" type="button" style="border-radius: 0px">Получить dump</button>
+                  <div v-if="dumpFileUrl" style="margin-left: 20px;">
+                    <a :href="dumpFileUrl">Скачать файл</a>
+                  </div>
+              </div>
+              <!------ / Сделать dump базы--->
+
                 <!----- Скопировать базу --->
                 <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;">Копировать базу</h6>
                 <div class="input-group">
@@ -149,6 +157,7 @@ export default {
   name: "DataBaseUpdateForm",
   props: ['db_name'],
   data: () => ({
+      dumpFileUrl     : '',
       showToggleJson  : false,
       newCopyDbName   : '',
       newRenameDbName : '',
@@ -178,6 +187,7 @@ export default {
   },
 
   methods: {
+
     ...mapActions([
       'fetchDbList',
       'fetchUserList',
@@ -195,9 +205,21 @@ export default {
        this.fetchDbList(resp.dbName);
     },
 
+    getDbDumpFile(){
+         this.dumpFileUrl = '';
+         const host = 'http://185.63.191.96';
+         const url  = host + '/pgsql_dumper.php?dbname=' + this.db_name;
+         const data = {dbname : this.db_name};
+         this.httpFeth(url,  'get', data).then(response => {
+             let dumpUrl = response
+             this.dumpFileUrl = host + '/' + dumpUrl;
+         })
+    },
+
     getAttachedDbUsers() {
 
-         if(!this.datacl) return [];
+         if(!this.datacl)
+           return [];
 
          let datacl = this.datacl;
          let items = [];
@@ -216,6 +238,16 @@ export default {
 
          return items;
     },
+
+    async httpFeth(url, method = 'get', data = null) {
+        const apiUrl = url
+        let response = await fetch(apiUrl)
+        if (response.ok) {
+          const result = await response.json()
+          return result.data
+        }
+        alert('Ошибка HTTP: ' + response.status)
+    }
 
   } // methods
 }
