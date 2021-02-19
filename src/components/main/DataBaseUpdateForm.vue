@@ -274,9 +274,9 @@ export default {
       let formData = new FormData();
       formData.append('dump-file', this.dumpFile)
       formData.append('dbname'   , this.db_name)
-      this._http(url, 'POST', formData, true).then(response => {
-          let res = response
-          this.dumpFile = '';
+      this._http(url, 'post', formData, true).then(response => {
+          if(response)
+             alert('Dump в базу успешно выполнен');
       })
     },
 
@@ -307,30 +307,14 @@ export default {
       return items;
     },
 
-    async _http(url, method = 'GET', data = null, notStringify = false) {
-        const apiUrl = url
-        let response = {};
-        if(data)  {
-          let body = (notStringify) ? data : JSON.stringify(data)
-          const params = {
-            method: method,
-            headers: {
-              'Content-Type': 'application/json, application/x-www-form-urlencoded'
-            },
-            body: body
-          }
-          response = await fetch(apiUrl, params)
-        } else {
-          response = await fetch(apiUrl)
-        }
+    async _http(url, method = 'get', data = null, notStringify = false) {
+        const response = await this.$http[method](url, data)
+        const body = response.body;
+        if(body.data)
+          return body.data;
 
-        if (!response.ok) {
-            alert('Ошибка HTTP: ' + response.status)
-            return false;
-        }
-
-        const result = await response.json()
-        return result.data
+        alert('Не удалось выполнить Http запрос - ' + body);
+        return false;
     }
 
   } // methods

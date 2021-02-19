@@ -41,14 +41,14 @@
             </td>
 
             <td tabindex="1">
-                <input v-model="item.column_default" type="text">
+              <input v-model="item.column_default" type="text">
             </td>
 
             <td tabindex="1" style="width: 20px;">
               <div @click="commonDeleteField(fname, table_name)"
                    style="width:100%; margin:0px; padding:3px 1px 0px 0px">
-                   <i class="mdi mr-2 mdi-delete deleteBoxIcon"
-                      style="color: red; font-size: 20px; margin-left: 17%;"></i>
+                <i class="mdi mr-2 mdi-delete deleteBoxIcon"
+                   style="color: red; font-size: 20px; margin-left: 17%;"></i>
               </div>
             </td>
 
