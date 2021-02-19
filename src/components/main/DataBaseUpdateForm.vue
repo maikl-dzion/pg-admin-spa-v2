@@ -162,8 +162,7 @@
         </div>
         <!---- / Задать права пользователю   --->
 
-        <div class="card">
-          <div class="card-body">
+        <div class="card"><div class="card-body">
 
             <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;">
               Прикрепленные к базе пользователи</h6>
@@ -177,15 +176,23 @@
             </div>
 
             <hr>
-
             <button @click="showToggleJson = !showToggleJson" type="button" class="btn btn-info"
-                    style="border-radius: 0px; margin:4px 20px 4px 4px;"> Показать Json
+                        style="border-radius: 0px; margin:4px 20px 4px 4px;"> Показать Json
             </button>
-            <div>
-              <pre v-if="showToggleJson">{{ getDbItemInfo }}</pre>
+            <div><pre v-if="showToggleJson">{{ getDbItemInfo }}</pre></div>
+             <hr>
+
+            <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;">Список dump файлов</h6>
+
+           <button @click="getDumpFileList()" type="button" class="btn btn-info"
+                  style="border-radius: 0px; margin:4px 20px 4px 4px;"> Получить список dump файлов
+           </button>
+
+            <div v-for="(item, i) in dbDumpList" :key="i">
+                 <a :href="postgresServer + '/' + item" >{{item}}</a>
             </div>
-          </div>
-        </div>
+
+        </div></div>
 
       </div> <!--- ./col-lg-4 --->
 
@@ -204,6 +211,7 @@ export default {
   name: "DataBaseUpdateForm",
   props: ['db_name'],
   data: () => ({
+
     postgresServer : 'http://185.63.191.96',
     dumpFile   : '',
     dumpFileUrl: '',
@@ -211,6 +219,8 @@ export default {
     newCopyDbName: '',
     newRenameDbName: '',
     userName: '',
+    dbDumpList : [],
+
   }),
 
   components: {
@@ -265,6 +275,14 @@ export default {
       this._http(url).then(response => {
         let dumpUrl = response
         this.dumpFileUrl = host + '/' + dumpUrl;
+      })
+    },
+
+    getDumpFileList() {
+      const host = this.postgresServer;
+      const url = host + '/pgsql_dumper.php?action=get_dump_list';
+      this._http(url).then(response => {
+          this.dbDumpList = response
       })
     },
 
