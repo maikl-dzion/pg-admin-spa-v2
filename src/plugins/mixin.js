@@ -100,10 +100,32 @@ const BaseMixin = {
                     selectFieldType: 'VARCHAR',
 
                     tableFieldTypes: [
-                        {name: 'integer', title: 'Число'  , size: ''},
-                        {name: 'varchar', title: 'Строка'  , size: '255'},
-                        {name: 'text'   , title: 'Textarea', size: ''},
-                        {name: 'SERIAL' , title: 'Serial'  , size: ''}
+
+                        {name: 'integer', title: 'integer'   , size: ''},
+                        {name: 'varchar', title: 'varchar'  , size: '255'},
+                        {name: 'text'   , title: 'text', size: ''},
+                        {name: 'serial' , title: 'serial'  , size: ''},
+
+                        {name: 'json',    title: 'json'  , size: ''},
+                        {name: 'xml',     title: 'xml'   , size: ''},
+                        {name: 'uuid'   , title: 'uuid', size: ''},
+                        {name: 'character' , title: 'character'  , size: '255'},
+
+                        {name: 'timestamp',    title: 'timestamp'  , size: ''},
+                        {name: 'date',     title: 'date'   , size: ''},
+                        {name: 'boolean'   , title: 'boolean', size: ''},
+                        {name: 'numeric' , title: 'numeric'  , size: ''},
+
+                        {name: 'bigint',    title: 'bigint'  , size: ''},
+                        {name: 'date',     title: 'date'   , size: ''},
+                        {name: 'boolean'   , title: 'boolean', size: ''},
+                        {name: 'numeric' , title: 'numeric'  , size: ''},
+
+                        {name: 'line',    title: 'line'  , size: ''},
+                        {name: 'point',     title: 'point'   , size: ''},
+                        {name: 'polygon'   , title: 'polygon', size: ''},
+
+
                     ],
 
                 }

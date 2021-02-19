@@ -3,144 +3,191 @@
 
     <div class="row">
       <div class="col-lg-12 col-md-8">
-        <div class="card"><div class="card-body" >
-              <div v-if="db_name">
-                  <span style="font-style: italic;">Выбранная база : </span>
-                  <span style="color:green;margin-left:10px;" >{{db_name}}</span>
-              </div>
+        <div class="card">
+          <div class="card-body">
+            <div v-if="db_name">
+              <span style="font-style: italic;">Выбранная база : </span>
+              <span style="color:green;margin-left:10px;">{{ db_name }}</span>
+            </div>
 
-              <div v-if="datacl" style="margin-left: 0px;">
-                  <span style="font-style: italic;">Пользователи базы : </span>
-                  <span style="color:green;margin-left:10px;" >{{datacl}}</span>
-              </div>
-        </div></div>
+            <div v-if="datacl" style="margin-left: 0px;">
+              <span style="font-style: italic;">Пользователи базы : </span>
+              <span style="color:green;margin-left:10px;">{{ datacl }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
 
-    <div class="row" >
+    <div class="row">
 
-        <!--- Центральный Контент Блок -->
-        <div class="col-lg-6 col-md-8">
+      <!--- Центральный Контент Блок -->
+      <div class="col-lg-6 col-md-8">
 
-          <div class="card"><div class="card-body">
+        <div class="card">
+          <div class="card-body">
 
             <!------  Создать новую базу  --->
-            <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder;  margin-top:10px;">Создать новую базу</h6>
+            <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder;  margin-top:10px;">
+              Создать новую базу</h6>
             <div class="input-group">
-                <input v-model="newDbName" type="text" class="form-control" placeholder="Имя новой базы" >
-                <div class="input-group-append">
-                    <button @click="addNewDb()" class="btn btn-outline-secondary" type="button" style="border-radius: 0px">Создать базу</button>
-                </div>
+              <input v-model="newDbName" type="text" class="form-control" placeholder="Имя новой базы">
+              <div class="input-group-append">
+                <button @click="addNewDb()" class="btn btn-outline-secondary" type="button" style="border-radius: 0px">
+                  Создать базу
+                </button>
+              </div>
             </div>
             <!------ / Создать новую базу --->
 
-            <template v-if="db_name" >
+            <template v-if="db_name">
 
               <!------  Сделать dump базы  --->
               <h6 class="card-title my-custom-card-title"
                   style="font-size: 15px; font-weight: bolder;  margin-top:10px;">Сделать dump базы</h6>
               <div class="input-group">
-                  <button @click="getDbDumpFile()" class="btn btn-outline-secondary" type="button" style="border-radius: 0px">Получить dump</button>
-                  <div v-if="dumpFileUrl" style="margin-left: 20px;">
-                    <a :href="dumpFileUrl">Скачать файл</a>
-                  </div>
+                <button @click="getDumpFile()" class="btn btn-outline-secondary" type="button"
+                        style="border-radius: 0px">Получить dump
+                </button>
+                <div v-if="dumpFileUrl" style="margin-left: 20px;">
+                  <a :href="dumpFileUrl">Скачать файл</a>
+                </div>
               </div>
               <!------ / Сделать dump базы--->
 
-                <!----- Скопировать базу --->
-                <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;">Копировать базу</h6>
+              <!------  Загрузить dump в базы  --->
+              <h6 class="card-title my-custom-card-title"
+                  style="font-size: 15px; font-weight: bolder;  margin-top:10px;">Загрузить dump в базу</h6>
+              <div class="input-group">
+                <div  style="margin-left: 0px;">
+                     <input @change="setDumpFile($event)" name="dump-file" id="dump_file" type="file" class="form-control"
+                            style="border: #b1dee3 1px solid; border-radius: 0px; padding:4px; cursor:pointer;">
+                </div>
+                <button v-if="dumpFile"
+                      @click="sendDumpFile()" class="btn btn-outline-secondary" type="button"
+                      style="border-radius: 0px">Загрузить dump
+                 </button>
+              </div>
+              <!------ / Загрузить dump в базы --->
+
+              <!----- Скопировать базу --->
+              <h6 class="card-title my-custom-card-title"
+                  style="font-size: 15px; font-weight: bolder; margin-top:30px;">Копировать базу</h6>
+              <div class="input-group">
+                <input v-model="newCopyDbName" type="text" class="form-control" placeholder="Задать имя копии базы">
+                <div class="input-group-append">
+                  <button @click="copyDb(db_name, newCopyDbName)"
+                          class="btn btn-outline-secondary" type="button" style="border-radius: 0px">Создать копию
+                  </button>
+                </div>
+              </div>
+              <!---- / Скопировать базу --->
+
+              <!----- Удалить  базу --->
+              <template v-if="!checkSystemName(db_name)">
+                <h6 class="card-title my-custom-card-title"
+                    style="font-size: 15px; font-weight: bolder; margin-top:30px;">Удалить базу </h6>
                 <div class="input-group">
-                  <input v-model="newCopyDbName" type="text" class="form-control" placeholder="Задать имя копии базы">
+                  <input v-model="db_name" type="text" class="form-control" disabled>
                   <div class="input-group-append">
-                    <button @click="copyDb(db_name, newCopyDbName)"
-                            class="btn btn-outline-secondary" type="button" style="border-radius: 0px">Создать копию</button>
+                    <button @click="deleteDb(db_name)" class="btn btn-outline-danger" type="button"
+                            style="border-radius: 0px">Удалить базу
+                    </button>
                   </div>
                 </div>
-                <!---- / Скопировать базу --->
-
-                <!----- Удалить  базу --->
-                <template v-if="!checkSystemName(db_name)" >
-                  <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;">Удалить базу </h6>
-                  <div class="input-group">
-                    <input v-model="db_name" type="text" class="form-control" disabled>
-                    <div class="input-group-append">
-                      <button @click="deleteDb(db_name)" class="btn btn-outline-danger" type="button" style="border-radius: 0px">Удалить базу</button>
-                    </div>
-                  </div>
-                </template>
-                <!---- / Удалить  базу  --->
+              </template>
+              <!---- / Удалить  базу  --->
             </template>
 
-          </div></div>
+          </div>
+        </div>
 
-          <!----- ПРОСМОТР ПОЛЕЙ БАЗЫ    ------->
-          <div v-if="db_name" class="card" style="margin-top:20px;" ><div class="card-body" >
-              <ShowItemInfo
-                  title="Информация о базе"
-                  :item_info="getDbItemInfo"
-              ></ShowItemInfo>
-          </div></div>
+        <!----- ПРОСМОТР ПОЛЕЙ БАЗЫ    ------->
+        <div v-if="db_name" class="card" style="margin-top:20px;">
+          <div class="card-body">
+            <ShowItemInfo
+              title="Информация о базе"
+              :item_info="getDbItemInfo"
+            ></ShowItemInfo>
+          </div>
+        </div>
 
-        </div><!--- ./col-lg-6 --->
+      </div><!--- ./col-lg-6 --->
 
-        <!-------------------------->
-        <!--- Правый Контент Блок -->
-        <div class="col-lg-6 col-md-4" >
+      <!-------------------------->
+      <!--- Правый Контент Блок -->
+      <div class="col-lg-6 col-md-4">
 
-              <!----- Задать права пользователю --->
-              <div v-if="db_name" class="card"><div class="card-body">
-                    <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;">Задать права пользователю </h6>
-                    <div class="input-group">
-                         <table style="background: none">
-                           <tr> <td>База</td> <td>Пользователь</td> </tr>
-                           <tr> <td style="width:40%; padding:0px; margin:0px;">
-                                  <input v-model="db_name" type="text" class="form-control" disabled style="width: 100%" >
-                                </td>
-                                <td>
-                                   <select v-model="userName" style="cursor: pointer;"
-                                           class="form-control form-control-line pl-0" >
-                                           <option v-for="(user, i) in getUserList"
-                                                   :key="user.usename"
-                                                   :value="user.usename" >{{ user.usename }}
-                                           </option>
-                                   </select>
-                                </td>
-                           </tr>
-                         </table>
-                    </div>
+        <!----- Задать права пользователю --->
+        <div v-if="db_name" class="card">
+          <div class="card-body">
+            <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;">
+              Задать права пользователю </h6>
+            <div class="input-group">
+              <table style="background: none">
+                <tr>
+                  <td>База</td>
+                  <td>Пользователь</td>
+                </tr>
+                <tr>
+                  <td style="width:40%; padding:0px; margin:0px;">
+                    <input v-model="db_name" type="text" class="form-control" disabled style="width: 100%">
+                  </td>
+                  <td>
+                    <select v-model="userName" style="cursor: pointer;"
+                            class="form-control form-control-line pl-0">
+                      <option v-for="(user, i) in getUserList"
+                              :key="user.usename"
+                              :value="user.usename">{{ user.usename }}
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+              </table>
+            </div>
 
-                    <div style="text-align: right">
-                      <div class="btn-group" role="group" style="margin:5px 0px 0px 0px; width: 60%">
-                          <button @click="changeUserRole(db_name, userName, 'set')" type="button"
-                                  class="btn btn-success" style="border-radius: 0px; color:white" >Установить права</button>
-                          <button @click="changeUserRole(db_name, userName, 'delete')" type="button"
-                                  class="btn btn-danger" style="border-radius: 0px; margin-left:2px;" >Удалить права</button>
-                      </div>
-                    </div>
+            <div style="text-align: right">
+              <div class="btn-group" role="group" style="margin:5px 0px 0px 0px; width: 60%">
+                <button @click="changeUserRole(db_name, userName, 'set')" type="button"
+                        class="btn btn-success" style="border-radius: 0px; color:white">Установить права
+                </button>
+                <button @click="changeUserRole(db_name, userName, 'delete')" type="button"
+                        class="btn btn-danger" style="border-radius: 0px; margin-left:2px;">Удалить права
+                </button>
+              </div>
+            </div>
 
-              </div></div>
-              <!---- / Задать права пользователю   --->
+          </div>
+        </div>
+        <!---- / Задать права пользователю   --->
 
-              <div class="card"><div class="card-body">
+        <div class="card">
+          <div class="card-body">
 
-                  <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;">Прикрепленные к базе пользователи</h6>
-                  <div v-for="(item, i) in attachedUsers" :key="item.name">
-                       <template v-if="i == 0">
-                          <div >{{item.name}} <span style="color:green">(admin</span>)</div>
-                       </template>
-                       <template v-else >
-                          <div >{{item.name}}</div>
-                       </template>
-                  </div>
+            <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder; margin-top:30px;">
+              Прикрепленные к базе пользователи</h6>
+            <div v-for="(item, i) in attachedUsers" :key="item.name">
+              <template v-if="i == 0">
+                <div>{{ item.name }} <span style="color:green">(admin</span>)</div>
+              </template>
+              <template v-else>
+                <div>{{ item.name }}</div>
+              </template>
+            </div>
 
-                  <hr>
+            <hr>
 
-                  <button @click="showToggleJson = !showToggleJson" type="button" class="btn btn-info" style="border-radius: 0px; margin:4px 20px 4px 4px;"> Показать Json</button>
-                  <div><pre v-if="showToggleJson" >{{ getDbItemInfo }}</pre></div>
-              </div></div>
+            <button @click="showToggleJson = !showToggleJson" type="button" class="btn btn-info"
+                    style="border-radius: 0px; margin:4px 20px 4px 4px;"> Показать Json
+            </button>
+            <div>
+              <pre v-if="showToggleJson">{{ getDbItemInfo }}</pre>
+            </div>
+          </div>
+        </div>
 
-        </div> <!--- ./col-lg-4 --->
+      </div> <!--- ./col-lg-4 --->
 
     </div>
 
@@ -150,39 +197,41 @@
 
 <script>
 
-import { mapGetters, mapActions} from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 import ShowItemInfo from "@/components/main/ShowItemInfo";
 
 export default {
   name: "DataBaseUpdateForm",
   props: ['db_name'],
   data: () => ({
-      dumpFileUrl     : '',
-      showToggleJson  : false,
-      newCopyDbName   : '',
-      newRenameDbName : '',
-      userName        :  '',
+    postgresServer : 'http://185.63.191.96',
+    dumpFile   : '',
+    dumpFileUrl: '',
+    showToggleJson: false,
+    newCopyDbName: '',
+    newRenameDbName: '',
+    userName: '',
   }),
 
-  components : {
-     ShowItemInfo,
+  components: {
+    ShowItemInfo,
   },
 
   computed: {
 
-     ...mapGetters([
-          'getDbList',
-          'getUserList',
-          'getDbItemInfo'
-     ]),
+    ...mapGetters([
+      'getDbList',
+      'getUserList',
+      'getDbItemInfo'
+    ]),
 
-     datacl() {
-       return this.getDbItemInfo.datacl;
-     },
+    datacl() {
+      return this.getDbItemInfo.datacl;
+    },
 
-     attachedUsers() {
-        return this.getAttachedDbUsers();
-     },
+    attachedUsers() {
+      return this.getAttachedDbUsers();
+    },
 
   },
 
@@ -195,58 +244,93 @@ export default {
     ]),
 
     changeUserRole(dbName, userName, action = 'set') {
-        switch (action) {
-          case 'set'    : this.setUserPrivileges(userName, dbName, this.saveResponseHandle); break;
-          case 'delete' : this.delUserPrivileges(userName, dbName, this.saveResponseHandle); break;
-        }
+      switch (action) {
+        case 'set'    :
+          this.setUserPrivileges(userName, dbName, this.saveResponseHandle);
+          break;
+        case 'delete' :
+          this.delUserPrivileges(userName, dbName, this.saveResponseHandle);
+          break;
+      }
     },
 
     saveResponseHandle(resp) {
-       this.fetchDbList(resp.dbName);
+      this.fetchDbList(resp.dbName);
     },
 
-    getDbDumpFile(){
-         this.dumpFileUrl = '';
-         const host = 'http://185.63.191.96';
-         const url  = host + '/pgsql_dumper.php?dbname=' + this.db_name;
-         const data = {dbname : this.db_name};
-         this.httpFeth(url,  'get', data).then(response => {
-             let dumpUrl = response
-             this.dumpFileUrl = host + '/' + dumpUrl;
-         })
+    getDumpFile() {
+      this.dumpFileUrl = '';
+      const host = this.postgresServer;
+      const url = host + '/pgsql_dumper.php?dbname=' + this.db_name;
+      this._http(url).then(response => {
+        let dumpUrl = response
+        this.dumpFileUrl = host + '/' + dumpUrl;
+      })
+    },
+
+    sendDumpFile() {
+      const host = this.postgresServer;
+      const url = host + '/pgsql_dumper.php?dbname=' + this.db_name;
+      let formData = new FormData();
+      formData.append('dump-file', this.dumpFile)
+      formData.append('dbname'   , this.db_name)
+      this._http(url, 'POST', formData, true).then(response => {
+          let res = response
+          this.dumpFile = '';
+      })
+    },
+
+    setDumpFile(event) {
+       this.dumpFile = event.target.files[0];
     },
 
     getAttachedDbUsers() {
 
-         if(!this.datacl)
-           return [];
+      if (!this.datacl)
+        return [];
 
-         let datacl = this.datacl;
-         let items = [];
-         for(let i in this.getUserList) {
-            let user = this.getUserList[i];
-            let name = user.usename;
-            let num = datacl.indexOf(name);
-            if(num !== -1) {
-               items.push({name, num});
-            }
-         }
+      let datacl = this.datacl;
+      let items = [];
+      for (let i in this.getUserList) {
+        let user = this.getUserList[i];
+        let name = user.usename;
+        let num = datacl.indexOf(name);
+        if (num !== -1) {
+          items.push({name, num});
+        }
+      }
 
-         items.sort((a, b) => {
-             return a.num - b.num;
-         })
+      items.sort((a, b) => {
+        return a.num - b.num;
+      })
 
-         return items;
+      return items;
     },
 
-    async httpFeth(url, method = 'get', data = null) {
+    async _http(url, method = 'GET', data = null, notStringify = false) {
         const apiUrl = url
-        let response = await fetch(apiUrl)
-        if (response.ok) {
-          const result = await response.json()
-          return result.data
+        let response = {};
+        if(data)  {
+          let body = (notStringify) ? data : JSON.stringify(data)
+          const params = {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json, application/x-www-form-urlencoded'
+            },
+            body: body
+          }
+          response = await fetch(apiUrl, params)
+        } else {
+          response = await fetch(apiUrl)
         }
-        alert('Ошибка HTTP: ' + response.status)
+
+        if (!response.ok) {
+            alert('Ошибка HTTP: ' + response.status)
+            return false;
+        }
+
+        const result = await response.json()
+        return result.data
     }
 
   } // methods
