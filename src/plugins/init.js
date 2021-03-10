@@ -557,12 +557,16 @@ const InitApp = {
                     return this.autoIncName
                 },
 
-                addItem() {
-                    var url = 'ADD_ITEM/' + this.tableName
-                    this.http(url).then(resp => {
-                        this.getTableData(this.tableName)
+                addItem(data, table = null) {
+
+                    table = (table) ? table : this.tableName;
+
+                    const url = 'ADD_ITEM/' + table
+                    this.http(url, data, 'post').then(resp => {
+                        this.getTableData(table)
                         this.getTableListSheme()
                     })
+
                 },
 
                 clickOpenPanel() {

@@ -5,7 +5,7 @@
       <div class="col-lg-12 col-md-8"><div class="card"><div class="card-body" >
 
           <div v-if="table_name">
-            <span style="font-style: italic;">Выбранная таблица : </span>
+            <span style="font-style: italic;">Таблица : </span>
             <span style="color:green;margin-left:10px;" >{{table_name}}</span>
           </div>
 
@@ -28,6 +28,19 @@
           <!---- / Редактирование полей  --->
 
 <!--          <pre>{{getTableList}}</pre>-->
+
+          <div class="card">
+            <div class="card-body">
+              <button @click="showToggleAddData = !showToggleAddData" type="button" class="btn btn-info" style="border-radius: 0px; margin:4px 20px 4px 4px;"> Добавление данных в таблицу </button>
+              <div v-if="showToggleAddData">
+                <button @click="addItem(addItemData, table_name)" type="button" class="btn btn-info" style="border-radius: 0px; margin:4px 20px 4px 4px;"> Сохранить </button><hr>
+                <div v-for="(item, fname) in tableFields" :key="fname">
+                  <div>{{ item.column_name }}</div>
+                  <div><input v-model="addItemData[item.column_name]" type="text" style="width: 100%; border:1px gainsboro solid"></div>
+                </div>
+              </div>
+            </div>
+          </div>
 
         </div><!--- ./col-lg-8 --->
 
@@ -53,6 +66,7 @@
                     <!------ / Создание таблицы --->
 
                     <template v-if="table_name" >
+
                         <!----- Изменить имя таблицы --->
                         <h6 class="card-title my-custom-card-title" style="font-size: 15px; font-weight: bolder;  margin-top:10px;">Изменить имя таблицы</h6>
                         <div class="input-group">
@@ -84,6 +98,7 @@
                             </div>
                         </div>
                         <!---- / Удалить  таблицу  --->
+
                     </template>
 
               </div></div>
@@ -111,10 +126,23 @@
 
               <div class="card">
                   <div class="card-body">
-                    <button @click="showToggleJson = !showToggleJson" type="button" class="btn btn-info" style="border-radius: 0px; margin:4px 20px 4px 4px;"> Показать Json</button>
+                    <button @click="showToggleJson = !showToggleJson" type="button" class="btn btn-info" style="border-radius: 0px; margin:4px 20px 4px 4px;"> Показать Json </button>
                     <div><pre v-if="showToggleJson">{{ tableFields }}</pre></div>
                   </div>
               </div>
+
+<!--              <div class="card">-->
+<!--                <div class="card-body">-->
+<!--                  <button @click="showToggleAddData = !showToggleAddData" type="button" class="btn btn-info" style="border-radius: 0px; margin:4px 20px 4px 4px;"> Добавление данных в таблицу </button>-->
+<!--                  <div v-if="!showToggleAddData">-->
+<!--                    <button @click="addItem(addItemData, table_name)" type="button" class="btn btn-info" style="border-radius: 0px; margin:4px 20px 4px 4px;"> Сохранить </button><hr>-->
+<!--                    <div v-for="(item, fname) in tableFields" :key="fname">-->
+<!--                        <div>{{ item.column_name }}</div>-->
+<!--                        <div><input v-model="addItemData[item.column_name]" type="text" style="width: 100%"></div>-->
+<!--                     </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
 
         </div> <!--- ./col-lg-4 --->
 
@@ -142,6 +170,7 @@ export default {
   data: () => ({
 
       showToggleJson: false,
+      showToggleAddData : false,
       newCopyTableName   : '',
       newRenameTableName : '',
 
@@ -158,6 +187,8 @@ export default {
         id_fname: 'id',
         type    : 'serial',
       },
+
+      addItemData : {},
 
   }),
 
